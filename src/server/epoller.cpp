@@ -8,7 +8,7 @@ namespace webserver {
         epoll_events_.resize(max_event);
     }
 
-    bool Epoller::update_channel(channel* channel) {
+    bool Epoller::add_channel(channel* channel) {
         return Update(EPOLL_CTL_ADD, channel);
     }
 

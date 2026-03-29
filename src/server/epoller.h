@@ -20,7 +20,7 @@ namespace webserver {
         Epoller(const Epoller&) = delete;
         Epoller& operator=(const Epoller&) = delete;
 
-        bool update_channel(channel* channel);
+        bool add_channel(channel* channel);
         bool remove_channel(channel* channel);
         bool modify_channel(channel* channel);
 

@@ -1,7 +1,9 @@
-set(SRC_FILES
-        main.cpp
-        log/logger.cpp
-        server/epoller.cpp
+file(GLOB SRC_FILES
+        "*.cpp"
+        "log/*.cpp"
+        "server/*.cpp"
+        "buffer/*.cpp"
+        "http/*.cpp"  # 预留给以后的 http 文件夹
 )
 
 # 2. 定义可执行程序目标

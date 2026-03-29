@@ -21,6 +21,10 @@ namespace webserver {
         void set_revents(uint32_t revents) { real_events_ = revents; }
 
         void handle_events() {
+            if ((real_events_ & (EPOLLHUP | EPOLLRDHUP | EPOLLERR)) && !(real_events_ & EPOLLIN)) {
+                if (errorCallback_) errorCallback_();
+                return;
+            }
             if ((real_events_ & EPOLLIN) && readCallback_) {
                 readCallback_();
             }
@@ -36,6 +40,7 @@ namespace webserver {
         void disable_reading() { events_ &= ~EPOLLIN; }
         void enable_writing() { events_ |= EPOLLOUT; }
         void disable_writing() { events_ &= ~EPOLLOUT; }
+        void enable_rdhup() { events_ |= EPOLLRDHUP; }
 
     private:
         int fd_;

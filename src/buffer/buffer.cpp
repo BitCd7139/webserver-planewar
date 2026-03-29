@@ -5,30 +5,30 @@
 #include <sys/uio.h>
 
 namespace webserver {
-    std::size_t Buffer::ReadableByteSize() const noexcept {
+    std::size_t Buffer::readable_bytes() const noexcept {
         return write_pos_ - read_pos_;
     }
 
-    std::size_t Buffer::WritableByteSize() const noexcept {
+    std::size_t Buffer::writable_bytes() const noexcept {
         return buffer_.size() - write_pos_;
     }
 
-    std::size_t Buffer::PrependableByteSize() const noexcept {
+    std::size_t Buffer::prependable_bytes() const noexcept {
         return read_pos_;
     }
 
-    const char* Buffer::Peek() const noexcept{
+    const char* Buffer::peek() const noexcept{
         return BeginPtr_() + read_pos_;
     }
 
     void Buffer::Retrieve(size_t len) noexcept{
-        assert(len <= ReadableByteSize());
+        assert(len <= readable_bytes());
         read_pos_ += len;
     }
 
     void Buffer::RetrieveUntil(const char* end) noexcept{
-        assert(Peek() <= end );
-        Retrieve(end - Peek());
+        assert(peek() <= end );
+        Retrieve(end - peek());
         }
 
     void Buffer::RetrieveAll() noexcept{
@@ -38,7 +38,7 @@ namespace webserver {
     }
 
     std::string Buffer::RetrieveAllToStr() {
-        std::string str(Peek(), ReadableByteSize());
+        std::string str(peek(), readable_bytes());
         RetrieveAll();
         return str;
     }
@@ -72,20 +72,20 @@ namespace webserver {
     }
 
     void Buffer::Append(const Buffer& buff) {
-        Append(buff.Peek(), buff.ReadableByteSize());
+        Append(buff.peek(), buff.readable_bytes());
     }
 
     void Buffer::EnsureWriteable(size_t len) {
-        if(WritableByteSize() < len) {
+        if(writable_bytes() < len) {
             MakeSpace_(len);
         }
-        assert(WritableByteSize() >= len);
+        assert(writable_bytes() >= len);
     }
 
     ssize_t Buffer::ReadFd(int fd, int* saveErrno) {
         char buff[65535];
         struct iovec iov[2];
-        const size_t writable = WritableByteSize();
+        const size_t writable = writable_bytes();
 
         iov[0].iov_base = BeginPtr_() + write_pos_;
         iov[0].iov_len = writable;
@@ -107,8 +107,8 @@ namespace webserver {
     }
 
     ssize_t Buffer::WriteFd(int fd, int* saveErrno) {
-        const size_t readSize = ReadableByteSize();
-        const ssize_t len = write(fd, Peek(), readSize);
+        const size_t readSize = readable_bytes();
+        const ssize_t len = write(fd, peek(), readSize);
         if(len < 0) {
             *saveErrno = errno;
             return len;
@@ -126,15 +126,15 @@ namespace webserver {
     }
 
     void Buffer::MakeSpace_(size_t len) {
-        if(WritableByteSize() + PrependableByteSize() < len) {
+        if(writable_bytes() + prependable_bytes() < len) {
             buffer_.resize(write_pos_ + len + 1);
         }
         else {
-            size_t readable = ReadableByteSize();
+            size_t readable = readable_bytes();
             std::copy(BeginPtr_() + read_pos_, BeginPtr_() + write_pos_, BeginPtr_());
             read_pos_ = 0;
             write_pos_ = read_pos_ + readable;
-            assert(readable == ReadableByteSize());
+            assert(readable == readable_bytes());
         }
     }
 
