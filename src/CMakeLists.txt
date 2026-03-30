@@ -3,7 +3,7 @@ file(GLOB SRC_FILES
         "log/*.cpp"
         "server/*.cpp"
         "buffer/*.cpp"
-        "http/*.cpp"  # 预留给以后的 http 文件夹
+        "http/*.cpp"
 )
 
 # 2. 定义可执行程序目标
