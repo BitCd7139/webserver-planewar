@@ -23,13 +23,21 @@
 ## 🧩 C++17 特性应用 (C++17 Features)
 
 * 基于 **string_view** 和 **滑动窗口** 封装标准库容器，实现自动增长的缓冲区。
-* 基于 **filesystem** 模块实现文件系统操作，保证页面安全性。
-* 基于 **function** 模块实现回调函数，简化事件处理逻辑。
-* 基于 **optional** 模块实现 HTTP 请求解析器，简化状态管理。
+* 基于 **filesystem** 实现文件系统操作，保证页面安全性。
+* 基于 **function** 实现回调函数，简化事件处理逻辑。
+* 基于 **optional** 实现 HTTP 请求解析器，简化状态管理。
 * 基于 **shared_ptr** 和 **unique_ptr** 简化内存管理，避免文件描述符泄漏。
 * 实现 MPMC（多生产者多消费者）线程安全 **无锁队列**，支持线程池和异步日志系统。
 
+
+## ⚙️ 环境要求 (Requirements)
+
+* C++17 以上
+* CMake 3.10 以上
+* Linux 操作系统
+
 ## 🛠️ 构建与运行 (Build & Run)
+
 1. 克隆仓库并进入项目目录：
 
    ```bash
@@ -57,10 +65,120 @@
 
 ![加载界面](./readme_assest/loading.png)
 
-游戏界面如下所示：
+游戏开始界面：
 
 ![开始游戏](./readme_assest/gamestart.png)
+
+游戏运行时界面：
+
 ![游戏界面](./readme_assest/gameplay.gif)
+
+角色生命归零，游戏结束：
+
 ![游戏结束](./readme_assest/gameover.png)
 
+## 📁 项目结构 (Project Structure)
+
+```
+.
+│  CMakeLists.txt
+│  readme.md
+│
+├─readme_assest
+│      gameover.png
+│      gameplay.gif
+│      gamestart.png
+│      loading.png
+│
+├─resources
+│      index.html
+│      planewar.jar
+│
+├─src
+│  │  CMakeLists.txt
+│  │  main.cpp
+│  │
+│  ├─buffer
+│  │      buffer.cpp
+│  │      buffer.h
+│  │
+│  ├─http
+│  │      http_conn.cpp
+│  │      http_conn.h
+│  │      http_request.cpp
+│  │      http_request.h
+│  │      http_response.cpp
+│  │      http_response.h
+│  │
+│  ├─log
+│  │      logger.cpp
+│  │      logger.h
+│  │
+│  ├─planewar
+│  │  │  Sansation.ttf
+│  │  │
+│  │  ├─images
+│  │  │  ├─object
+│  │  │  │      boom.png
+│  │  │  │      boom_smaller.png
+│  │  │  │      bullet.png
+│  │  │  │      enemyBlack.png
+│  │  │  │      enemyBlue.png
+│  │  │  │      enemyRed.png
+│  │  │  │      enemyWhite.png
+│  │  │  │      health.png
+│  │  │  │      player.png
+│  │  │  │      spell.png
+│  │  │  │
+│  │  │  └─ui
+│  │  │          gameover.png
+│  │  │          icon.png
+│  │  │          pause.png
+│  │  │          playBg.png
+│  │  │          start.png
+│  │  │          state.png
+│  │  │
+│  │  └─src
+│  │      ├─lib
+│  │      │      lombok-1.18.20.jar
+│  │      │
+│  │      ├─META-INF
+│  │      │      MANIFEST.MF
+│  │      │
+│  │      ├─object
+│  │      │      Boom.java
+│  │      │      Bullet.java
+│  │      │      Enemy.java
+│  │      │      EnemyBlack.java
+│  │      │      EnemyBlue.java
+│  │      │      EnemyRed.java
+│  │      │      EnemyWhite.java
+│  │      │      FlyingObject.java
+│  │      │      Player.java
+│  │      │
+│  │      └─ui
+│  │              Game.java
+│  │
+│  ├─pool
+│  │      threadpool.h
+│  │
+│  ├─server
+│  │      channel.h
+│  │      epoller.cpp
+│  │      epoller.h
+│  │      server.cpp
+│  │      server.h
+│  │
+│  ├─timer
+│  │      heap_timer.cpp
+│  │      heap_timer.h
+│  │
+│  └─util
+│          get_root.h
+│          lock_free_queue.hpp
+│
+└─test
+        CMakeLists.txt
+        server_test.cpp
+```
 
