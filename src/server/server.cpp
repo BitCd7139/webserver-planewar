@@ -46,12 +46,12 @@ namespace webserver {
             if (client_fd > 0) {
                 auto conn = std::make_unique<HttpConn>(client_fd, epoller_.get(), &timer_);
                 timer_.add(client_fd, timer_.timeout_ms_, [this, client_fd]() {
-                    LOG_INFO("Connection timeout, fd: %d", client_fd);
+                    LOG_DEBUG("Connection timeout, fd: %d", client_fd);
                     std::lock_guard<std::mutex> lock(mutex_);
                     users_.erase(client_fd);
                 });
                 conn->SetCloseCallback([this, client_fd]() {
-                    LOG_INFO("Connection closed, fd: %d", client_fd);
+                    LOG_DEBUG("Connection closed, fd: %d", client_fd);
                     std::lock_guard<std::mutex> lock(mutex_);
                     users_.erase(client_fd);
                 });
@@ -62,7 +62,7 @@ namespace webserver {
 
                 std::lock_guard<std::mutex> lock(mutex_);
                 users_[client_fd] = std::move(conn);
-                LOG_INFO("New connection from client on port %d", client_fd);
+                LOG_DEBUG("New connection from client on port %d", client_fd);
             }
             else {
                 if (errno == EAGAIN || errno == EWOULDBLOCK) {
@@ -197,7 +197,6 @@ void Server::HandleHttpRequest(const HttpRequest& req, HttpResponse& res) {
             res.set_content_type(HttpResponse::GetMimeType(target_path.extension().string()));
             res.set_keep_alive(req.is_keep_alive());
 
-            // 使用 std::move 避免对 buffer 进行无意义的深度拷贝，进一步提升性能
             res.set_body(std::move(buffer));
 
         } catch (const std::exception& e) {

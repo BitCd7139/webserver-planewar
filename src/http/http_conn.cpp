@@ -96,7 +96,7 @@ namespace webserver {
     }
 
     void HttpConn::HandleClose() {
-        LOG_INFO("Client disconnected from fd: %d", fd_);
+        LOG_DEBUG("Client disconnected from fd: %d", fd_);
         if (close_callback_) {
             close_callback_();
         }

@@ -30,7 +30,7 @@ public:
     int timeout_ms_;
 
     HeapTimer(int timeout_ms) : timeout_ms_(timeout_ms) {
-        heap_.reserve(64);
+        heap_.reserve(8192);
     }
 
     ~HeapTimer() { clear(); }
@@ -60,8 +60,8 @@ private:
 
     void SwapNode_(size_t i, size_t j);
 
+    std::mutex mtx_;
     std::vector<TimerNode> heap_;
-
     std::unordered_map<int, size_t> ref_;
 };
 

@@ -20,7 +20,7 @@ void test_func(int a, int b) {
 using namespace webserver;
 
 int main() {
-    webserver::Server server(12345, Log::LogLevel::DEBUG);
+    webserver::Server server(12345, Log::LogLevel::INFO);
     server.run();
 
     return 0;
