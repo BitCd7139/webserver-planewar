@@ -78,6 +78,18 @@
 
 ![游戏结束](./readme_assest/gameover.png)
 
+## 📊 性能测试 (Performance Testing)
+
+基于WebBench工具进行压力测试，模拟 10000 个并发连接，持续 10 秒：
+
+```
+./webbench -c 10000 -t 10 'http://ip:port/'
+```
+
+![压力测试](./readme_assest/pressure.png)
+
+QPS: 2w 左右
+
 ## 📁 项目结构 (Project Structure)
 
 ```

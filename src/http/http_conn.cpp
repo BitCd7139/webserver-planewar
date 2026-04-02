@@ -23,8 +23,6 @@ namespace webserver {
             std::string_view data(read_buffer_.peek(), read_buffer_.readable_bytes());
             size_t consumed = request_.Parse(data);
             read_buffer_.Retrieve(consumed);
-            timer_->adjust(fd_, timer_->timeout_ms_);
-
 
             if (request_.is_error()) {
                 // 400 Bad Request
@@ -64,7 +62,6 @@ namespace webserver {
 
         if (n > 0) {
             write_buffer_.Retrieve(n);
-
 
             if (write_buffer_.readable_bytes() == 0) {
                 channel_.disable_writing();

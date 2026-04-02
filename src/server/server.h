@@ -45,7 +45,7 @@ namespace webserver {
         std::string document_root_;
         std::unique_ptr<channel> listen_channel_;
         std::unique_ptr<Epoller> epoller_;
-        std::unordered_map<int, std::unique_ptr<HttpConn>> users_;
+        std::unordered_map<int, std::shared_ptr<HttpConn>> users_;
         std::unique_ptr<threadpool> threadpool_;
         std::mutex mutex_;
     };

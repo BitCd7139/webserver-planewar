@@ -117,7 +117,9 @@ void HeapTimer::tick() {
                 break;
             }
             cb = node.cb;
-            pop();
+
+            // lock_free pop
+            del_(0);
         }
         if (cb) cb();
     }

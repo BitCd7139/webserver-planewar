@@ -41,6 +41,10 @@ namespace webserver {
             http_handler_ = std::move(http_handler);
         }
 
+        channel* get_channel() {
+            return &channel_;
+        }
+
     private:
         void HandleRead();
         void HandleWrite();

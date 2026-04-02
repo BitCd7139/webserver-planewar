@@ -86,8 +86,10 @@ namespace webserver {
                     channel->handle_events();
                 }
                 else {
-                    threadpool_->enqueue([channel]() {
-                        channel->handle_events();
+                    threadpool_->enqueue([conn_ptr = users_[channel->get_fd()]]() {
+                        if (conn_ptr) {
+                            conn_ptr->get_channel()->handle_events();
+                        }
                     });
                 }
             }
